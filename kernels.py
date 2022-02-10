@@ -77,7 +77,7 @@ class Kernel:
 
         loo_loss = 1/self.n_train * jnp.sum(delta ** 2)
 
-        if self.classes == 2:
+        if self.classes == 1:
             loo_acc = 1 / self.n_train * jnp.sum(self.y_train * delta < 1)
 
         else:
@@ -92,14 +92,14 @@ def ntk_kernel(depth=3):
     """
     Implements the NTK kernel of a fully-connected network
     :param depth:   int, depth of network
-    :return: kernel function
+    :return:        function of signature (x1, x2) -> float, implementing the kernel function
     """
-    init_fn, apply_fn, kernel_fn = stax.serial(
-        stax.Dense(512), stax.Relu(),
-        stax.Dense(512), stax.Relu(),
-        stax.Dense(512), stax.Relu(),
-        stax.Dense(1)
-    )
+    architecture = []
+    for _ in range(depth):
+        architecture += [stax.Dense(512), stax.Relu()]
+    architecture += [stax.Dense(1)]
+
+    init_fn, apply_fn, kernel_fn = stax.serial(*architecture)
 
     return lambda x1, x2: kernel_fn(x1, x2, 'ntk')
 
@@ -108,13 +108,13 @@ key = random.PRNGKey(2)
 _v = random.normal(key=key, shape=(10000, 10000))
 
 
-def random_feature_kernel(depth, dim, width):
+def random_feature_kernel(dim, width):
     """
     Implements the random feature kernel
     :param depth:   int, depth of network
     :param dim:     int, dimensionality of input features
     :param width:   int, width of network
-    :return:        kernel function
+    :return:        function of signature (x1, x2) -> float, implementing the kernel function
     """
     v = _v[:dim, :width]
     def feature(x): return jnp.abs(x @ v)
@@ -137,34 +137,13 @@ class NTK(Kernel):
 
 class RF(Kernel):
     """Implements the random feature kernels"""
-    def __init__(self, depth, width):
+    def __init__(self, width):
         """
         :param depth:   int, depth of network
         :param width:   int, width of network
         """
-        self.depth = depth
         self.width = width
         super().__init__()
 
     def compute_kernel(self, x1, x2):
-        return random_feature_kernel(depth=self.depth, dim=self.dim, width=self.width)(x1, x2)
-
-
-unit_test = False
-
-if unit_test:
-    from data import CIFAR10
-    n_test = 10000
-    data = CIFAR10(n_train=10000, n_test=n_test, classes=10, flat=True)
-    model = NTK(data.x_train, data.x_test, data.y_train, classes=10, depth=3)
-    pred_test = model.predict(data.x_test, mode='test')
-    test_loss = 1 / n_test * jnp.sum((pred_test - data.y_test)**2)
-    if data.classes == 2:
-        test_acc = 1 / n_test * jnp.sum(jnp.sign(pred_test) == data.y_test)
-    else:
-        test_acc = 1 / n_test * jnp.sum(jnp.argmax(pred_test, axis=1) == jnp.argmax(data.y_test, axis=1))
-    loo_loss, loo_acc = model.leave_one_out()
-    print('Test Loss is', test_loss)
-    print('Leave-One-Out Error is', loo_loss)
-    print('Test Accuracy is', test_acc)
-    print('Leave-One-Out Accuracy is', loo_acc)
+        return random_feature_kernel(dim=self.dim, width=self.width)(x1, x2)
