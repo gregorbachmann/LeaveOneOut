@@ -12,12 +12,11 @@ config.update("jax_enable_x64", True)
 
 
 class CIFAR10:
-    def __init__(self, n_train, n_test, d, classes=10, flat=False, key=None):
+    def __init__(self, n_train, n_test, classes=10, flat=False, key=None):
         """
         Implements data structure for CIFAR10, allowing to resize the images
         :param n_train:         int, number of training examples
         :param n_test:          int, number of test examples
-        :param dim:             int, dimensionality of inputs, images are rescaled according to d
         :param classes:         int, number of classes, one of '2' or '10'
         :param flat:            bool, flatten image to vector
         :param key:             key, used to generate randomness
@@ -25,7 +24,6 @@ class CIFAR10:
         self.n_train = n_train
         self.n_test = n_test
         self.flat = flat
-        self.d = d
         self.key = key
         self.classes = classes
 
