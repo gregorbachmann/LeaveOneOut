@@ -12,26 +12,28 @@ config.update("jax_enable_x64", True)
 
 
 class CIFAR10:
-    def __init__(self, n_train, n_test, classes=10, flat=False):
+    def __init__(self, n_train, n_test, classes=10, flat=False, download=False):
         """
         Implements data structure for CIFAR10
         :param n_train:         int, number of training examples
         :param n_test:          int, number of test examples
         :param classes:         int, number of classes, one of '2' or '10'
         :param flat:            bool, flatten image to vector
+        :param download:    bool, if true download the dataset
         """
         self.n_train = n_train
         self.n_test = n_test
         self.flat = flat
         self.classes = classes
+        self.download = download
 
         self.get_data()
 
     def get_data(self):
         # Load and store data
         dir_path = os.path.dirname(os.path.realpath(__file__))
-        trainset = torchvision.datasets.CIFAR10(root=dir_path + '/data', train=True, download=True)
-        testset = torchvision.datasets.CIFAR10(root=dir_path + '/data', train=False, download=True)
+        trainset = torchvision.datasets.CIFAR10(root=dir_path + '/data', train=True, download=self.download)
+        testset = torchvision.datasets.CIFAR10(root=dir_path + '/data', train=False, download=self.download)
 
         # Sort the data
         self.x_train = trainset.data[:, :, :] / 255.0
@@ -92,26 +94,28 @@ class CIFAR10:
 
 
 class MNIST:
-    def __init__(self, n_train, n_test, classes=10, flat=False):
+    def __init__(self, n_train, n_test, classes=10, flat=False, download=False):
         """
         Implements data structure for MNIST
         :param n_train:         int, number of training examples
         :param n_test:          int, number of test examples
         :param classes:         int, number of classes, one of '2' or '10'
         :param flat:            bool, flatten image to vector
+        :param download:    bool, if true download the dataset
         """
         self.n_train = n_train
         self.n_test = n_test
         self.flat = flat
         self.classes = classes
+        self.download = download
 
         self.get_data()
 
     def get_data(self):
         # Load and store data
         dir_path = os.path.dirname(os.path.realpath(__file__))
-        trainset = torchvision.datasets.MNIST(root=dir_path + '/data', train=True, download=True)
-        testset = torchvision.datasets.MNIST(root=dir_path + '/data', train=False, download=True)
+        trainset = torchvision.datasets.MNIST(root=dir_path + '/data', train=True, download=self.download)
+        testset = torchvision.datasets.MNIST(root=dir_path + '/data', train=False, download=self.download)
 
         # Sort the data
         self.x_train = trainset.train_data / 255.0
@@ -144,7 +148,7 @@ class MNIST:
         self.y_test = np.expand_dims(testset.train_labels, axis=1)
 
         if self.classes == 2:
-            self.n_test = min([self.n_test, 2000])
+            self.n_test = min([self.n_test, 2115])
             self.y_train = 2 * (self.y_train - 1 / 2)
 
             where_test = self.y_test < 2

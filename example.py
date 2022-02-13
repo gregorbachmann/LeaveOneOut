@@ -3,21 +3,21 @@ from utils import mse_loss, accuracy, get_dataset
 
 
 # Define the parameters
-n_train = 5000
-n_test = 10000
-classes = 10
-dataset = 'CIFAR'
+n_train = 2000
+n_test = 1000
+classes = 2
+dataset = 'MNIST'
 flat = True
 
 # Prepare the data
-data = get_dataset(name=dataset, n_train=n_train, n_test=n_test, classes=classes, flat=flat)
+data = get_dataset(name=dataset, n_train=n_train, n_test=n_test, classes=classes, flat=flat, download=False)
 
 # Define the model and fit it to the training data
 model = NTK(depth=5)
 model.fit(data.x_train, data.y_train)
 
 # Predict on train and test set
-preds_train = model.predict(data.x_test, mode='train')
+preds_train = model.predict(data.x_train, mode='train')
 preds_test = model.predict(data.x_test, mode='test')
 
 # Calculate the train, test and leave-one-out statistics

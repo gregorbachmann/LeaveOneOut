@@ -110,7 +110,7 @@ _v = random.normal(key=key, shape=(10000, 10000))
 
 def random_feature_kernel(dim, width):
     """
-    Implements the random feature kernel
+    Implements the random feature kernel function
     :param depth:   int, depth of network
     :param dim:     int, dimensionality of input features
     :param width:   int, width of network
@@ -136,7 +136,7 @@ class NTK(Kernel):
 
 
 class RF(Kernel):
-    """Implements the random feature kernels"""
+    """Implements the random feature kernel"""
     def __init__(self, width):
         """
         :param depth:   int, depth of network

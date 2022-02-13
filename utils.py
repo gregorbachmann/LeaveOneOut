@@ -49,7 +49,7 @@ def mse_loss(preds, targs):
     return loss
 
 
-def get_dataset(name, n_train, n_test, classes, flat):
+def get_dataset(name, n_train, n_test, classes, flat, download):
     """
     Returns the dataset according to 'name'
     :param name:        str, encoding name of dataset, one of 'CIFAR', 'MNIST'
@@ -57,9 +57,10 @@ def get_dataset(name, n_train, n_test, classes, flat):
     :param n_test:      int, number of test examples
     :param classes:     int, number of classes, one of 2 or 10
     :param flat:        bool, if true input arrays are flattened
+    :param download:    bool, if true download the dataset
     :return:            class of type dataset
     """
     if name == 'CIFAR':
-        return CIFAR10(n_train, n_test, classes, flat)
+        return CIFAR10(n_train, n_test, classes, flat, download)
     if name == 'MNIST':
-        return MNIST(n_train, n_test, classes, flat)
+        return MNIST(n_train, n_test, classes, flat, download)
