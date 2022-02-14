@@ -18,3 +18,15 @@ mathematical statements and their implementation. If you prefer to use standard 
 > example.py
 
 to produce test and the corresponding leave-one-out statistics. 
+
+## Reference
+f you use this code, please cite the following paper:
+``` bibtex
+@inproceedings{
+bachmann2022generalization,
+title={Generalization Through the Lens of Leave-One-Out Error},
+author={Gregor Bachmann and Thomas Hofmann and Aurelien Lucchi},
+booktitle={International Conference on Learning Representations},
+year={2022},
+url={https://openreview.net/forum?id=7grkzyj89A_}
+}
