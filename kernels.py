@@ -15,7 +15,6 @@ class Kernel:
     def __init__(self):
         self.x_train = None
         self.y_train = None
-        self.y_train = None
         self.classes = None
         self.dim = None
         self.n_train = None

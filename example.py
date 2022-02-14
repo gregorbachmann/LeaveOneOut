@@ -5,8 +5,8 @@ from utils import mse_loss, accuracy, get_dataset
 # Define the parameters
 n_train = 2000
 n_test = 1000
-classes = 2
-dataset = 'MNIST'
+classes = 10
+dataset = 'CIFAR'
 flat = True
 
 # Prepare the data

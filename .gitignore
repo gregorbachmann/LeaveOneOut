@@ -1,1 +1,4 @@
 data/
+.pynb_checkpoints/
+.idea/
+.DS_Store
