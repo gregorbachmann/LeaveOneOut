@@ -4,7 +4,7 @@ from utils import mse_loss, accuracy, get_dataset
 
 # Define the parameters
 n_train = 2000
-n_test = 1000
+n_test = 10000
 classes = 10
 dataset = 'CIFAR'
 flat = True
